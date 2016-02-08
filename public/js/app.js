@@ -23,6 +23,23 @@ var fakeAlbum = {
     }]
 };
 
-app.controller('mainCtrl', function($scope) {
-	$scope.album = fakeAlbum;
+app.controller('mainCtrl', function($scope, $http) {
+
+	//$scope.album = fakeAlbum;
+
+	$http.get('api/albums/')
+    .then(function (albums) {
+      return albums.data[2]
+    })
+    .then(function (album) {
+    	return $http.get('/api/albums/'+album._id)
+    })
+    .then(function (album) {
+			$scope.album = album.data;
+			$scope.album.imageUrl = '/api/albums/'+$scope.album._id+'.image';
+
+      console.log('the server responded with', album);
+    })
+    .catch(console.error.bind(console));
+
 });
