@@ -24,12 +24,55 @@ var fakeAlbum = {
 };
 
 app.controller('mainCtrl', function($scope, $http) {
+	var audio = document.createElement('audio');
 
-	//$scope.album = fakeAlbum;
+	$scope.pauseSong = function () {
+		audio.pause();
+		$scope.currentSong = null;
+	}
+
+	$scope.playSong = function (song) {
+		if( $scope.currentSong === song ) {
+			$scope.pauseSong();
+		} else {
+			$scope.currentSong = song;
+
+			audio.src = 'api/songs/'+song._id+'.audio';
+			audio.play();
+		}
+	};
+
+	$scope.nextSong = function() {
+		var songs = $scope.album.songs,
+				currentIndex = songs.indexOf($scope.currentSong),
+				nextSong;
+
+		nextSong = currentIndex===songs.length-1 ? songs[0] : songs[currentIndex+1];
+		$scope.playSong(nextSong);
+	}
+
+	$scope.previousSong = function() {
+		var songs = $scope.album.songs,
+				currentIndex = songs.indexOf($scope.currentSong),
+				previousSong;
+
+		previousSong = currentIndex===0 ? songs[songs.length-1] : songs[currentIndex-1];
+		$scope.playSong(previousSong);
+	}
+
+	audio.addEventListener('ended', function(){
+		$scope.nextSong();
+	});
+
+	audio.addEventListener('timeupdate', function(){
+		$scope.progress = 100 * audio.currentTime / audio.duration;
+		$scope.$digest();
+	});
+
 
 	$http.get('api/albums/')
     .then(function (albums) {
-      return albums.data[2]
+      return albums.data[4]
     })
     .then(function (album) {
     	return $http.get('/api/albums/'+album._id)
