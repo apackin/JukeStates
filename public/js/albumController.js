@@ -2,6 +2,14 @@
 
 app.controller('albumCtrl', function($scope, $http, $rootScope) {
 	
+ //    $scope.keyPress = function (e){
+	// 	switch (e) {
+	// 		// case 32: $scope.playSong(); break; // this will have to shuffle on play
+	// 		case 37: $scope.previousSong(); break;
+	// 		case 39: $scope.nextSong(); break;
+	// 	}
+	// };
+
 	$scope.playSong = function (song) {
 		if( $scope.currentSong === song ) {
 			$scope.pauseSong();
@@ -18,13 +26,16 @@ app.controller('albumCtrl', function($scope, $http, $rootScope) {
 
 	
 	$scope.pauseSong = function (data) {
-		$scope.currentSong = null;
+		// $scope.currentSong = null;
 		if(!data) $rootScope.$broadcast('pauseSong', true);
-	}
+	};
 
 
+	$rootScope.$on('previousSong', function(){
+		$scope.previousSong();
+	});
 
-	$rootScope.$on('previousSong', $scope.previousSong = function() {
+	$scope.previousSong = function() {
 			var songs = $scope.album.songs,
 					currentIndex = songs.indexOf($scope.currentSong),
 					previousSong;
@@ -32,11 +43,24 @@ app.controller('albumCtrl', function($scope, $http, $rootScope) {
 			previousSong = currentIndex===0 ? songs[songs.length-1] : songs[currentIndex-1];
 
 			$scope.playSong(previousSong);
-			$rootScope.$broadcast('play', previousSong);
+			$scope.$digest();
 			
-		});
+	};
 
+	$rootScope.$on('nextSong', function(){
+		$scope.nextSong();
+	});
 
+	$scope.nextSong = function() {
+		var songs = $scope.album.songs,
+				currentIndex = songs.indexOf($scope.currentSong),
+				nextSong;
+
+		nextSong = currentIndex===songs.length-1 ? songs[0] : songs[currentIndex+1];
+
+			$scope.playSong(nextSong);
+			$scope.$digest();
+	};
 
 	$http.get('api/albums/')
     .then(function (albums) {
@@ -53,6 +77,9 @@ app.controller('albumCtrl', function($scope, $http, $rootScope) {
       console.log('the server responded with', album);
     })
     .catch(console.error.bind(console));
+
+
+
 
    
 });

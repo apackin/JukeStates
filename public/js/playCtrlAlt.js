@@ -8,29 +8,29 @@ app.controller('playerCtrl', function($scope, $http, $rootScope) {
 
 	$scope.pauseButtonPressed = function () {
 		$rootScope.$broadcast('pausePlayer');
-	}
+	};
 
 	$scope.playSong = function (songUrl) {
 		$scope.nowPlaying = true;
 		$scope.audio.src = songUrl;
 		$scope.audio.play();
-	}
+	};
 
 	$scope.pauseSong = function () {
 		$scope.nowPlaying = false;
 		$scope.audio.pause();
-	}
+	};
 
 	$scope.nextSong = function () {
 		$rootScope.$broadcast('nextSong');
-	}
+	};
 
 	$scope.previousSong = function () {
 		$rootScope.$broadcast('previousSong');
-	}
+	};
 
 	$rootScope.$on('songPlaying', function (event, data) {
-		$scope.playSong(data.url)
+		$scope.playSong(data.url);
 	});
 
 	$rootScope.$on('songPaused', function() {
@@ -46,4 +46,4 @@ app.controller('playerCtrl', function($scope, $http, $rootScope) {
 		$scope.nextSong();
 	});
 
-})
+});

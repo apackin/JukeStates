@@ -7,7 +7,7 @@
   <link href="/style.css" rel="stylesheet" />
   <script src="/angular/angular.js"></script>
 </head>
-<body ng-app="juke">
+<body ng-app="juke" ng-controller="mainCtrl" ng-keyup="keyPress($event.keyCode)">
   <div id="main" class="container-fluid">
 
     <div class="col-xs-2">
@@ -40,7 +40,7 @@
             <tbody>
                 <tr ng-repeat="song in album.songs" ng-class="{ active: currentSong === song }">
                     <td>
-                        <button class="btn btn-default btn-xs" ng-click="playOrPauseSong(song)">
+                        <button class="btn btn-default btn-xs" ng-click="playSong(song)">
                             <span ng-hide="currentSong === song" class="glyphicon glyphicon-play"></span>
                             <span ng-show="currentSong === song" class="glyphicon glyphicon-pause"></span>
                         </button>
@@ -61,12 +61,12 @@
     </div>
 
     <footer ng-controller="playerCtrl">
-      <div ng-show="nowPlaying">
+      <div ng-show="currentSong">
         <div class="pull-left">
           <button class="btn btn-default" ng-click="previousSong()">
             <span class="glyphicon glyphicon-step-backward"></span>
           </button>
-          <button class="btn btn-default" ng-click="pauseButtonPressed()">
+          <button class="btn btn-default" ng-click="pauseSong()">
             <span class="glyphicon glyphicon-pause"></span>
           </button>
           <button class="btn btn-default" ng-click="nextSong()">
@@ -74,7 +74,7 @@
           </button>
         </div>
         <div class="bar">
-          <div class="progress">
+          <div class="progress" ng-click="scrubaDubDub($event)">
             <div class="progress-bar" ng-style="{width: progress + '%'}"></div>
           </div>
         </div>
@@ -83,6 +83,7 @@
 
   </div>
 
+    <script type="text/javascript" src="/js/app.js"></script>
   <script type="text/javascript" src="/js/playerController.js"></script>
   <script type="text/javascript" src="/js/albumController.js"></script>
 </body>
