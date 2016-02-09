@@ -1,3 +1,4 @@
+'use strict';
 
 app.controller('albumCtrl', function($scope, $http, $rootScope) {
 	

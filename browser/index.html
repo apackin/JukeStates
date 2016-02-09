@@ -40,7 +40,7 @@
             <tbody>
                 <tr ng-repeat="song in album.songs" ng-class="{ active: currentSong === song }">
                     <td>
-                        <button class="btn btn-default btn-xs" ng-click="playSong(song)">
+                        <button class="btn btn-default btn-xs" ng-click="playOrPauseSong(song)">
                             <span ng-hide="currentSong === song" class="glyphicon glyphicon-play"></span>
                             <span ng-show="currentSong === song" class="glyphicon glyphicon-pause"></span>
                         </button>
@@ -60,13 +60,13 @@
 
     </div>
 
-    <footer>
-      <div ng-controller="playerCtrl" ng-hide="!currentSong">
+    <footer ng-controller="playerCtrl">
+      <div ng-show="nowPlaying">
         <div class="pull-left">
           <button class="btn btn-default" ng-click="previousSong()">
             <span class="glyphicon glyphicon-step-backward"></span>
           </button>
-          <button class="btn btn-default" ng-click="emitPause()">
+          <button class="btn btn-default" ng-click="pauseButtonPressed()">
             <span class="glyphicon glyphicon-pause"></span>
           </button>
           <button class="btn btn-default" ng-click="nextSong()">
