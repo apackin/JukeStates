@@ -13,6 +13,10 @@ juke.directive('myplayer', function(PlayerFactory) {
 		    return PlayerFactory.getProgress() * 100;
 		  };
 
+		  $scope.scrubber = function(event) {
+		  	PlayerFactory.scrubber(event);
+		  };
+
   	},
     templateUrl: '/js/player/templates/player.html',
   };

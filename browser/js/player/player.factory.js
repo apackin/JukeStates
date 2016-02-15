@@ -64,6 +64,10 @@ juke.factory('PlayerFactory', function ($rootScope) {
     return progress;
   };
 
+  player.scrubber = function(e) {
+    audio.currentTime = e.offsetX/e.srcElement.parentNode.offsetWidth * audio.duration;
+  };
+
   // audio event listening
 
   audio.addEventListener('ended', function () {
