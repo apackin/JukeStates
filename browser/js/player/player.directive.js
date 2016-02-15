@@ -17,6 +17,8 @@ juke.directive('myplayer', function(PlayerFactory) {
 		  	PlayerFactory.scrubber(event);
 		  };
 
+		  //commit
+
   	},
     templateUrl: '/js/player/templates/player.html',
   };
